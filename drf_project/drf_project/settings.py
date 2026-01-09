@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'drf_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'django_api_db',
+        'HOST':'localhost',
+        'USER':'root',
+        'PASSWORD':'',
+        'PORT':3306
     }
 }
 
@@ -123,3 +127,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# for custom user 
+AUTH_USER_MODEL = 'my_app.User'

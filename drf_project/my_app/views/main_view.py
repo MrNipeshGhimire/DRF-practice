@@ -12,6 +12,7 @@ def product_view(request):
         serializer = ProductSerializer(product,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
     
+
     # for post request
     if request.method == 'POST':
         # title = request.data.get('title')
@@ -23,6 +24,33 @@ def product_view(request):
             return Response({'error':serializer.errors},status=status.HTTP_400_BAD_REQUEST)
     
 
+@api_view(['GET','PUT','DELETE'])
+def product_view_detail(request, id):
+    try:
+        product = Product.objects.get(id=id)
+    except Exception as e:
+        print(e)
+        return Response({'error':"Data not found"})
+    
+    # for get by id
+    if request.method == 'GET':
+        serializer = ProductSerializer(product)
+        return Response({'data':serializer.data},status=status.HTTP_200_OK)
+    
+    # delete 
+    if request.method == 'DELETE':
+        product.delete()
+        return Response({'msg':"Product deleted successfully"},status=status.HTTP_200_OK)
+    
+    # edit 
+    if request.method == 'PUT':
+        serializer = ProductSerializer(product,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'msg':"Product updated successfully",'data':serializer.data},status=status.HTTP_200_OK)
+        else:
+            return Response({'error':serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+        
 
 
 
